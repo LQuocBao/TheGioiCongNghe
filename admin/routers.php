@@ -2,29 +2,45 @@
 
 // Danh sách các route
 return [
+    // Dashboard
     '' => [
         'controller' => 'AdHomeController',
         'method' => 'index'
     ],
+    // Orders
     'order' => [
         'controller' => 'AdOrderController',
         'method' => 'index'
     ],
+    // Users
     'user' => [
         'controller' => 'AdUserController',
         'method' => 'index'
     ],
-    'product'=>[
+    // Products
+    'product' => [
         'controller' => 'AdProductController',
         'method' => 'index'
     ],
-    'product/delete/:id'=>[
+    'product/delete/:id' => [
         'controller' => 'AdProductController',
         'method' => 'delete'
     ],
-    'product/edit/:id'=>[
+    'product/edit/:id' => [
         'controller' => 'AdProductController',
         'method' => 'viewEdit'
+    ],
+    'product/update/:id' => [
+        'controller' => 'AdProductController',
+        'method' => 'update'
+    ],
+    'product/add' => [
+        'controller' => 'AdProductController',
+        'method' => 'viewAdd'
+    ],
+    'product/addproduct' => [
+        'controller' => 'AdProductController',
+        'method' => 'add'
     ],
     // 'contact' => [
     //     'controller' => 'PageController',

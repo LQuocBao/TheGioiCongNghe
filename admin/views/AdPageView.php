@@ -7,4 +7,8 @@
         public function EditProduct($editproduct, $getCates){
             require_once 'layout/Products/AdEditProductView.php';
         }
+
+        public function AddProduct($getCates){
+            require_once 'layout/Products/AdAddProductView.php';
+        }
     }

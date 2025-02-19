@@ -69,7 +69,7 @@ class ProductModel extends Connect
 
     public function getProductById($id)
     {
-        $sql = "SELECT p.*, c.name AS nameCate FROM products p JOIN categories c ON p.category_id = c.id WHERE p.id = $id";
+        $sql = "SELECT * FROM products WHERE id = $id ORDER BY updated_at DESC";
         $result = $this->getInstance($sql);
         // $product = null;
         if ($result) {
@@ -90,28 +90,43 @@ class ProductModel extends Connect
                 $this->category_id = 1; //Mặc định là 1 -> thêm vào csdl
             }
             $sql = "INSERT INTO products(name, image, images, price, price_sale, stock, short_description, description, category_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $result = $this->exec($sql, array($this->name, $this->image, $this->images, $this->price, $this->price_sale, $this->stock, $this->short_description, $this->description, $this->category_id));
+            $param = [$this->name, $this->image, $this->images, $this->price, $this->price_sale, $this->stock, $this->short_description, $this->description, $this->category_id];
+            $result = $this->exec($sql, $param);
+            // $result = $this->exec($sql, array($this->name, $this->image, $this->images, $this->price, $this->price_sale, $this->stock, $this->short_description, $this->description, $this->category_id));
             if ($result) {
                 return true;
             }
             return false;
         } catch (Exception $e) {
-            return false;
+            return $e->getMessage();
         }
     }
 
-    public function update()
+    public function update($id)
     {
-        try {
-            $sql = "UPDATE products SET name =?, image =?, images =?, price =?, price_sale =?, stock =?, short_description =?, description =?, category_id =? WHERE id =?";
-            $result = $this->exec($sql, array($this->name, $this->image, $this->images, $this->price, $this->price_sale, $this->stock, $this->short_description, $this->description, $this->category_id, $this->id));
-            if ($result) {
-                return true;
-            }
-            return false;
-        } catch (Exception $e) {
-            return false;
+        $sql = "UPDATE products SET name = :name, price = :price, price_sale = :priceSale, stock = :stock, 
+            short_description = :shortDescription, description = :description, category_id = :category, 
+            image = :image, images = :images
+            WHERE id = :id";
+
+        if (!$this->db) {
+            throw new Exception("🚨 Kết nối CSDL bị lỗi! Vui lòng kiểm tra lại.");
         }
+        $stmt = $this->db->prepare($sql);
+
+        $jsonImages = json_encode($this->images); // Encode images as JSON string
+
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':price', $this->price);
+        $stmt->bindParam(':priceSale', $this->price_sale);
+        $stmt->bindParam(':stock', $this->stock);
+        $stmt->bindParam(':shortDescription', $this->short_description);
+        $stmt->bindParam(':description', $this->description);
+        $stmt->bindParam(':category', $this->category_id);
+        $stmt->bindParam(':image', $this->image);
+        $stmt->bindParam(':images', $jsonImages); // Use the variable here
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
     }
 
     public function delete()
@@ -130,7 +145,7 @@ class ProductModel extends Connect
     public function getAllProducts()
     {
         try {
-            $sql = "SELECT * FROM products";
+            $sql = "SELECT * FROM products ORDER BY updated_at DESC";
             $result = $this->getList($sql);
             $products = array();
             if ($result) {

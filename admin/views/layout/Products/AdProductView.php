@@ -45,7 +45,9 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h2>Quản Lý Đơn Hàng</h2>
     </div>
-
+    <div class="pb-2 mb-3 ">
+        <a href="/PHP2/Assignment/admin/product/add" class="btn btn-primary">Thêm Sản Phẩm</a>
+    </div>
     <!-- Summary Section -->
     <div class="row mb-4">
         <div class="col-md-4">
@@ -88,7 +90,7 @@
                         <td><?= $product->getId() ?></td>
                         <td style="text-align: left;"><?= $product->getName() ?></td>
                         <td><?= number_format($product->getPrice()); ?> đ</td>
-                        <td><img src="../public/images/<?= $product->getImage() ?>" alt="Đây là ảnh" width="100px" height="100px"></td>
+                        <td><img src="/PHP2/Assignment/public/images/<?= $product->getImage() ?>" alt="Đây là ảnh" width="100px" height="100px"></td>
                         <td><?= $product->getStock() ?></td>
                         <td><?php echo date('H:i d/m/Y', strtotime($product->getUpdatedAt())); ?></td>
                         <td>

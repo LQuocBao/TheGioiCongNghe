@@ -11,16 +11,27 @@
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
+
+    form img {
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    form small {
+        display: block;
+        margin-top: 5px;
+    }
 </style>
 <div class="container mt-4">
     <!-- Header -->
     <h1 class="h3 mb-4">Chỉnh sửa sản phẩm</h1>
     <!-- Form -->
-    <form action="update_product.php" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="product_id" value="<?= $editproduct->getId() ?>">
+    <form action="/PHP2/Assignment/admin/product/update/<?= $editproduct->getId() ?>" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="<?= $editproduct->getId() ?>">
         <div class="mb-3">
-            <label for="product_name" class="form-label">Tên sản phẩm</label>
-            <input type="text" class="form-control" id="product_name" name="product_name" value="<?= $editproduct->getName(); ?>" required>
+            <label for="name" class="form-label">Tên sản phẩm</label>
+            <input type="text" class="form-control" id="name" name="name" value="<?= $editproduct->getName(); ?>" required>
         </div>
         <div class="mb-3">
             <label for="category" class="form-label">Danh mục</label>
@@ -51,28 +62,38 @@
             <input type="number" class="form-control" id="priceSale" name="priceSale" value="<?= htmlspecialchars($editproduct->getPriceSale() ?? 0) ?>">
         </div>
         <div class="mb-3">
-            <label for="quantity" class="form-label">Số lượng</label>
-            <input type="number" class="form-control" id="quantity" name="quantity" value="<?= $editproduct->getStock() ?>" min="0" required>
+            <label for="stock" class="form-label">Số lượng</label>
+            <input type="number" class="form-control" id="stock" name="stock" value="<?= $editproduct->getStock() ?>" min="0" required>
         </div>
         <div class="mb-3">
-            <label for="product_image" class="form-label">Ảnh chính sản phẩm</label><br>
-            <img src="/PHP2/Assignment/public/images/<?= $editproduct->getImage() ?>" alt="<?= $editproduct->getName() ?>" width="100px" height="100px">
-            <input type="file" class="form-control" id="product_image" name="product_image">
+            <label for="image" class="form-label">Ảnh chính sản phẩm</label>
+            <?php if (empty($editproduct->getImage())): ?>
+                <p class="text-muted">Chưa có ảnh chính</p>
+            <?php else: ?>
+                <img src="/PHP2/Assignment/public/images/<?= htmlspecialchars($editproduct->getImage()) ?>"
+                    alt="<?= htmlspecialchars($editproduct->getName()) ?>"
+                    width="100px" height="100px" class="me-2">
+            <?php endif; ?>
+            <input type="hidden" class="form-control" id="old_image" name="old_image" value="<?= $editproduct->getImage() ?>">
+            <input type="file" class="form-control" id="image" name="image">
             <small class="text-muted">Để trống nếu không muốn thay đổi ảnh.</small>
         </div>
         <div class="mb-3">
-            <label for="list_images" class="form-label">Ảnh phụ sản phẩm</label><br>
+            <label for="list_images" class="form-label">Ảnh phụ sản phẩm</label>
             <?php
-            // var_dump($editproduct->getImages());
-            $json = $editproduct->getImages();
-            $images = json_decode($json, true);
-            if ($images == null) {
-                echo 'Chưa có ảnh phụ';
-            }
-            foreach ($images as $image): ?>
-                <img src="/PHP2/Assignment/public/images/<?= $image ?>" alt="<?= $image ?>" width="100px" height="100px">
-                <!-- <input type="checkbox" name="delete_image[]" value="<?= $image ?>"> Xoá ảnh -->
-            <?php endforeach; ?>
+            $images = json_decode($editproduct->getImages(), true);
+            if (empty($images)): ?>
+                <p class="text-muted">Chưa có ảnh phụ</p>
+            <?php else: ?>
+                <?php foreach ($images as $image): ?>
+                    <img src="/PHP2/Assignment/public/images/<?= htmlspecialchars($image) ?>"
+                        alt="<?= htmlspecialchars($image) ?>"
+                        width="100px" height="100px" class="me-2">
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <input type="hidden" class="form-control" id="old_images" name="old_images" value='<?= json_encode($images)?>'>
+            <input type="file" class="form-control" id="list_images" name="list_images[]" multiple>
+            <small class="text-muted">Để trống nếu không muốn thay đổi ảnh.</small>
         </div>
 
         <!-- Submit Button -->
@@ -86,24 +107,14 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        if (typeof ClassicEditor === 'undefined') {
-            console.error('CKEditor is not loaded!');
-        } else {
-            console.log('CKEditor is loaded successfully!');
-        }
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        ClassicEditor
-            .create(document.querySelector('#shortDescription'))
-            .catch(error => {
-                console.error(error);
-            });
-
-        ClassicEditor
-            .create(document.querySelector('#description'))
-            .catch(error => {
-                console.error(error);
-            });
+    document.addEventListener("DOMContentLoaded", () => {
+        const editors = ['#shortDescription', '#description'];
+        editors.forEach(selector => {
+            ClassicEditor
+                .create(document.querySelector(selector))
+                .catch(error => {
+                    console.error(`Error initializing CKEditor for ${selector}:`, error);
+                });
+        });
     });
 </script>
