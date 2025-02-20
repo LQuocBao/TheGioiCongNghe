@@ -35,11 +35,11 @@
         </div>
         <div class="mb-3">
             <label for="shortDescription" class="form-label">Mô tả ngắn</label>
-            <textarea class="form-control" id="shortDescription" name="shortDescription" rows="3" placeholder="Nhập mô tả ngắn" ></textarea>
+            <textarea class="form-control" id="shortDescription" name="shortDescription" rows="3" placeholder="Nhập mô tả ngắn"></textarea>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Mô tả dài</label>
-            <textarea class="form-control" id="description" name="description" rows="6" placeholder="Nhập mô tả dài" ></textarea>
+            <textarea class="form-control" id="description" name="description" rows="6" placeholder="Nhập mô tả dài"></textarea>
         </div>
         <div class="mb-3">
             <label for="category" class="form-label">Danh mục</label>
@@ -61,6 +61,14 @@
         <div class="mb-3">
             <label for="stock" class="form-label">Số lượng</label>
             <input type="number" class="form-control" id="stock" name="stock" placeholder="Nhập số lượng" min="0" required>
+        </div>
+        <div class="mb-3">
+            <label for="status" class="form-label">Trạng thái</label>
+            <select class="form-select" id="status" name="status" required>
+                <option value="0">Đang hoạt động</option>
+                <option value="1">Tạm ngưng</option>
+                <option value="2">Hết hàng</option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Ảnh sản phẩm</label>

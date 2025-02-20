@@ -12,7 +12,7 @@ class AdProductController
     // Delete product
     public function delete($id)
     {
-        $product = new ProductModel($id, null, null, null, null, null, null, null, null, null, null, null);
+        $product = new ProductModel($id, null, null, null, null, null, null, null, null, null, null, null, null);
         $result = $product->delete();
         if ($result) {
             echo "<script>alert('Xóa sản phẩm thành công'); window.location.href='/PHP2/Assignment/admin/product';</script>";
@@ -42,10 +42,10 @@ class AdProductController
             $product->setPrice($_POST['price']);
             $product->setPriceSale($_POST['priceSale']);
             $product->setStock($_POST['stock']);
+            $product->setStatus($_POST['status']);
             $product->setShortDescription($_POST['shortDescription']);
             $product->setDescription($_POST['description']);
             $product->setCategoryId($_POST['category']);
-
             // Ảnh chính
             if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
                 $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/PHP2/Assignment/public/images/";
@@ -83,11 +83,10 @@ class AdProductController
             } else {
                 $product->setImages(json_decode($_POST['old_images'] ?? '[]', true));
             }
-
             // Lưu kết quả cập nhật sản phẩm
             $result = $product->update($id);
             if ($result) {
-                echo "<script>alert('Cập nhật sản phẩm thành công!'); window.location.href='/PHP2/Assignment/admin/product';</>";
+                echo "<script>alert('Cập nhật sản phẩm thành công!'); window.location.href='/PHP2/Assignment/admin/product';</script>";
             } else {
                 echo "<script>alert('Cập nhật sản phẩm thất bại!'); window.location.href='/PHP2/Assignment/admin/product';</script>";
             }
@@ -114,6 +113,7 @@ class AdProductController
             $addProduct->setPrice($_POST['price']);
             $addProduct->setPriceSale($_POST['priceSale']);
             $addProduct->setStock($_POST['stock']);
+            $addProduct->setStatus($_POST['status']);
             $addProduct->setShortDescription($_POST['shortDescription']);
             $addProduct->setDescription($_POST['description']);
             $addProduct->setCategoryId($_POST['category']);

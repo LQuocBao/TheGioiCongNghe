@@ -45,6 +45,7 @@
                 <?php endforeach; ?>
             </select>
         </div>
+
         <div class="mb-3">
             <label for="shortDescription" class="form-label">Mô tả ngắn</label>
             <textarea class="form-control" id="shortDescription" name="shortDescription" rows="3" required><?= htmlspecialchars($editproduct->getShortDescription()) ?></textarea>
@@ -64,6 +65,14 @@
         <div class="mb-3">
             <label for="stock" class="form-label">Số lượng</label>
             <input type="number" class="form-control" id="stock" name="stock" value="<?= $editproduct->getStock() ?>" min="0" required>
+        </div>
+        <div class="mb-3">
+            <label for="status" class="form-label">Trạng thái</label>
+            <select class="form-select" id="status" name="status" required>
+                <option value="0" <?= $editproduct->getStatus() == 0 ? 'selected' : '' ?>>Đang hoạt động</option>
+                <option value="1" <?= $editproduct->getStatus() == 1 ? 'selected' : '' ?>>Tạm ngưng</option>
+                <option value="2" <?= $editproduct->getStatus() == 2 ? 'selected' : '' ?>>Hết hàng</option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Ảnh chính sản phẩm</label>
@@ -91,7 +100,7 @@
                         width="100px" height="100px" class="me-2">
                 <?php endforeach; ?>
             <?php endif; ?>
-            <input type="hidden" class="form-control" id="old_images" name="old_images" value='<?= json_encode($images)?>'>
+            <input type="hidden" class="form-control" id="old_images" name="old_images" value='<?= json_encode($images) ?>'>
             <input type="file" class="form-control" id="list_images" name="list_images[]" multiple>
             <small class="text-muted">Để trống nếu không muốn thay đổi ảnh.</small>
         </div>

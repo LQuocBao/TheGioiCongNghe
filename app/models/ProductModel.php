@@ -8,6 +8,7 @@ class ProductModel extends Connect
     private $price;
     private $price_sale;
     private $stock;
+    private $status;
     private $short_description;
     private $description;
     private $category_id;
@@ -25,11 +26,12 @@ class ProductModel extends Connect
             $this->price = func_get_arg(4);
             $this->price_sale = func_get_arg(5);
             $this->stock = func_get_arg(6);
-            $this->short_description = func_get_arg(7);
-            $this->description = func_get_arg(8);
-            $this->category_id = func_get_arg(9);
-            $this->created_at = func_get_arg(10);
-            $this->updated_at = func_get_arg(11);
+            $this->status = func_get_arg(7);
+            $this->short_description = func_get_arg(8);
+            $this->description = func_get_arg(9);
+            $this->category_id = func_get_arg(10);
+            $this->created_at = func_get_arg(11);
+            $this->updated_at = func_get_arg(12);
         }
     }
 
@@ -40,7 +42,7 @@ class ProductModel extends Connect
         $products = array();
         if ($result) {
             foreach ($result as $row) {
-                $product = new ProductModel($row['id'], $row['name'], $row['image'], $row['images'], $row['price'], $row['price_sale'], $row['stock'], $row['short_description'], $row['description'], $row['category_id'], $row['created_at'], $row['updated_at']);
+                $product = new ProductModel($row['id'], $row['name'], $row['image'], $row['images'], $row['price'], $row['price_sale'], $row['stock'], $row['status'], $row['short_description'], $row['description'], $row['category_id'], $row['created_at'], $row['updated_at']);
                 array_push($products, $product);
             }
         }
@@ -60,7 +62,7 @@ class ProductModel extends Connect
         $products = array();
         if ($result) {
             foreach ($result as $row) {
-                $product = new ProductModel($row['id'], $row['name'], $row['image'], $row['images'], $row['price'], $row['price_sale'], $row['stock'], $row['short_description'], $row['description'], $row['category_id'], $row['created_at'], $row['updated_at']);
+                $product = new ProductModel($row['id'], $row['name'], $row['image'], $row['images'], $row['price'], $row['price_sale'], $row['stock'], $row['status'], $row['short_description'], $row['description'], $row['category_id'], $row['created_at'], $row['updated_at']);
                 array_push($products, $product);
             }
         }
@@ -73,7 +75,7 @@ class ProductModel extends Connect
         $result = $this->getInstance($sql);
         // $product = null;
         if ($result) {
-            $product = new ProductModel($result['id'], $result['name'], $result['image'], $result['images'], $result['price'], $result['price_sale'], $result['stock'], $result['short_description'], $result['description'], $result['category_id'], $result['created_at'], $result['updated_at']);
+            $product = new ProductModel($result['id'], $result['name'], $result['image'], $result['images'], $result['price'], $result['price_sale'], $result['stock'], $result['status'], $result['short_description'], $result['description'], $result['category_id'], $result['created_at'], $result['updated_at']);
         }
         return $product;
     }
@@ -89,8 +91,8 @@ class ProductModel extends Connect
                 // return false; loại sản phẩm không tồn tại -> không thêm vào csdl
                 $this->category_id = 1; //Mặc định là 1 -> thêm vào csdl
             }
-            $sql = "INSERT INTO products(name, image, images, price, price_sale, stock, short_description, description, category_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $param = [$this->name, $this->image, $this->images, $this->price, $this->price_sale, $this->stock, $this->short_description, $this->description, $this->category_id];
+            $sql = "INSERT INTO products(name, image, images, price, price_sale, stock, status, short_description, description, category_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $param = [$this->name, $this->image, $this->images, $this->price, $this->price_sale, $this->stock, $this->status, $this->short_description, $this->description, $this->category_id];
             $result = $this->exec($sql, $param);
             // $result = $this->exec($sql, array($this->name, $this->image, $this->images, $this->price, $this->price_sale, $this->stock, $this->short_description, $this->description, $this->category_id));
             if ($result) {
@@ -104,7 +106,7 @@ class ProductModel extends Connect
 
     public function update($id)
     {
-        $sql = "UPDATE products SET name = :name, price = :price, price_sale = :priceSale, stock = :stock, 
+        $sql = "UPDATE products SET name = :name, price = :price, price_sale = :priceSale, stock = :stock, status = :status,
             short_description = :shortDescription, description = :description, category_id = :category, 
             image = :image, images = :images
             WHERE id = :id";
@@ -120,6 +122,7 @@ class ProductModel extends Connect
         $stmt->bindParam(':price', $this->price);
         $stmt->bindParam(':priceSale', $this->price_sale);
         $stmt->bindParam(':stock', $this->stock);
+        $stmt->bindParam(':status', $this->status);
         $stmt->bindParam(':shortDescription', $this->short_description);
         $stmt->bindParam(':description', $this->description);
         $stmt->bindParam(':category', $this->category_id);
@@ -150,7 +153,7 @@ class ProductModel extends Connect
             $products = array();
             if ($result) {
                 foreach ($result as $row) {
-                    $product = new ProductModel($row['id'], $row['name'], $row['image'], $row['images'], $row['price'], $row['price_sale'], $row['stock'], $row['short_description'], $row['description'], $row['category_id'], $row['created_at'], $row['updated_at']);
+                    $product = new ProductModel($row['id'], $row['name'], $row['image'], $row['images'], $row['price'], $row['price_sale'], $row['stock'], $row['status'], $row['short_description'], $row['description'], $row['category_id'], $row['created_at'], $row['updated_at']);
                     array_push($products, $product);
                 }
             }
@@ -227,6 +230,14 @@ class ProductModel extends Connect
         $this->stock = $stock;
     }
 
+    public function getStatus()
+    {
+        return $this->status;
+    }
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
     public function getShortDescription()
     {
         return $this->short_description;

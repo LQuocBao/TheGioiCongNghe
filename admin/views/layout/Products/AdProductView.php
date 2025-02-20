@@ -80,6 +80,7 @@
                     <th>Giá</th>
                     <th>Ảnh</th>
                     <th>Số Lượng</th>
+                    <th>Trạng Thái</th>
                     <th>Ngày cập nhật</th>
                     <th>Hành Động</th>
                 </tr>
@@ -92,6 +93,7 @@
                         <td><?= number_format($product->getPrice()); ?> đ</td>
                         <td><img src="/PHP2/Assignment/public/images/<?= $product->getImage() ?>" alt="Đây là ảnh" width="100px" height="100px"></td>
                         <td><?= $product->getStock() ?></td>
+                        <td><?php if ($product->getStatus() == 0) echo 'Đang hoạt động'; elseif($product->getStatus() == 1) echo 'Tạm Ngưng';else echo 'Hết hàng';?></td>
                         <td><?php echo date('H:i d/m/Y', strtotime($product->getUpdatedAt())); ?></td>
                         <td>
                             <button class="btn btn-primary btn-sm"><a href="/PHP2/Assignment/admin/product/edit/<?= $product->getId() ?>">Sửa</a></button>
