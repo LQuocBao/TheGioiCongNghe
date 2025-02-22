@@ -1,3 +1,7 @@
+<?php
+session_start();
+ob_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -131,6 +135,7 @@ require_once 'include.php';
         cursor: pointer;
         padding: 5px;
     }
+
     h6 {
         padding-left: 32px;
     }
@@ -151,7 +156,7 @@ require_once 'include.php';
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="">    
+            <a class="navbar-brand" href="">
                 <img src="/PHP2/Assignment/public/images/logo.png" alt="Thế Giới Công Nghệ">
             </a>
             <!-- Nút toggle cho menu khi thu nhỏ -->
@@ -188,8 +193,23 @@ require_once 'include.php';
                     </button>
                 </form>
             </div>
+            <a class="nav-link text-white p-3" href="/PHP2/Assignment/register">
+                <i class="fa-solid fa-user"></i>
+                <?php
+                if (isset($_SESSION['user'])) {
+                ?>
+                    <div class="top-link pe-2">
+                        <!-- <a href="#" class="text-white"><small class="text-white mx-2"><?= $_SESSION['role'] ?></small>/</a> -->
+                        <a href="/PHP2/Assignment/logout" class="text-white"><small class="text-white mx-2">Đăng xuất</small></a>
+                    </div>
+                <?php
+                } else {
+                    echo '';
+                }
+                ?>
+            </a>
             <a class="nav-link text-white" href="#">
-                <i class="fas fa-shopping-cart"></i> GIỎ HÀNG / 0 đ
+                <i class="fas fa-shopping-cart"></i>
             </a>
         </div>
     </nav>

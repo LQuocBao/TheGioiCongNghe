@@ -10,6 +10,28 @@ return [
         'controller' => 'ProductController',
         'method' => 'detail'
     ],
+    //Đăng ký + đăng nhập
+    'register' => [
+        'controller' => 'UserController',
+        'method' => 'viewRegister'
+    ],
+    'signUp' => [
+        'controller' => 'UserController',
+        'method' => 'signUp'
+    ],
+    'login' => [
+        'controller' => 'UserController',
+        'method' => 'viewLogin'
+    ],
+    'signIn' => [
+        'controller' => 'UserController',
+        'method' => 'signIn'
+    ],
+    'logout' => [
+        'controller' => 'UserController',
+        'method' => 'logout'
+    ],
+
     // 'about' => [
     //     'controller' => 'PageController',
     //     'method' => 'about'

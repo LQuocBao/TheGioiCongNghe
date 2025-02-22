@@ -1,3 +1,12 @@
+<?php
+session_start();
+ob_start();
+if (!isset($_SESSION['user']) || $_SESSION['role'] != 1) {
+    // Nếu người dùng không đăng nhập hoặc không phải là admin, chuyển hướng đến trang đăng nhập
+    header('Location: /PHP2/Assignment/login');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,7 +71,7 @@
             </ul>
             <ul class="logout-mode">
                 <li>
-                    <a href="#">
+                    <a href="/PHP2/Assignment/logout">
                         <i class="uil uil-signout"></i>
                         <span class="link-name">Logout</span>
                     </a>
